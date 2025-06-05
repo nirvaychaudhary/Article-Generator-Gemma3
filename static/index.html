@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="inline-flex items-center space-x-3 mb-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-feather-alt text-white text-xl"></i>
+                </div>
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Article Generator
+                </h1>
+            </div>
+            <p class="text-gray-600 text-lg">Generate high-quality articles using local Ollama3 AI</p>
+            
+            <!-- Health Status -->
+            <div id="health-status" class="mt-4 inline-flex items-center space-x-2 px-3 py-1 rounded-full text-sm">
+                <div class="w-2 h-2 rounded-full"></div>
+                <span>Checking connection...</span>
+            </div>
+        </header>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Left Panel - Input Form -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-xl p-6 sticky top-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-edit text-blue-500 mr-3"></i>
+                        Article Settings
+                    </h2>
+                    
+                    <form id="article-form" class="space-y-6">
+                        <!-- Topic Input -->
+                        <div>
+                            <label for="topic" class="block text-sm font-medium text-gray-700 mb-2">
+                                Article Topic
+                            </label>
+                            <textarea 
+                                id="topic" 
+                                name="topic" 
+                                rows="3" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                placeholder="Enter your article topic or describe what you want to write about..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <!-- Length Selection -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Article Length</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <label class="flex items-center justify-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors">
+                                    <input type="radio" name="length" value="short" class="sr-only">
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium">Short</div>
+                                        <div class="text-xs text-gray-500">300-500 words</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center justify-center p-3 border-2 border-blue-500 bg-blue-50 rounded-lg cursor-pointer">
+                                    <input type="radio" name="length" value="medium" checked class="sr-only">
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-blue-700">Medium</div>
+                                        <div class="text-xs text-blue-600">800-1200 words</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center justify-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors">
+                                    <input type="radio" name="length" value="long" class="sr-only">
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium">Long</div>
+                                        <div class="text-xs text-gray-500">1500-2500 words</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Style Selection -->
+                        <div>
+                            <label for="style" class="block text-sm font-medium text-gray-700 mb-2">
+                                Writing Style
+                            </label>
+                            <select id="style" name="style" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="informative">Informative</option>
+                                <option value="creative">Creative</option>
+                                <option value="technical">Technical</option>
+                                <option value="casual">Casual</option>
+                            </select>
+                        </div>
+
+                        <!-- Tone Selection -->
+                        <div>
+                            <label for="tone" class="block text-sm font-medium text-gray-700 mb-2">
+                                Tone
+                            </label>
+                            <select id="tone" name="tone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="neutral">Neutral</option>
+                                <option value="professional">Professional</option>
+                                <option value="friendly">Friendly</option>
+                                <option value="authoritative">Authoritative</option>
+                            </select>
+                        </div>
+
+                        <!-- Generation Buttons -->
+                        <div class="space-y-3">
+                            <button 
+                                type="submit" 
+                                id="generate-btn"
+                                class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+                            >
+                                <i class="fas fa-magic"></i>
+                                <span>Generate Article</span>
+                            </button>
+                            
+                            <button 
+                                type="button" 
+                                id="stream-btn"
+                                class="w-full bg-gradient-to-r from-green-500 to-teal-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-600 hover:to-teal-700 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+                            >
+                                <i class="fas fa-stream"></i>
+                                <span>Stream Generate</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Panel - Article Display -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-xl">
+                    <!-- Article Header -->
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                                <i class="fas fa-newspaper text-green-500 mr-3"></i>
+                                Generated Article
+                            </h2>
+                            <div class="flex space-x-2">
+                                <button 
+                                    id="copy-btn" 
+                                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2 opacity-0 disabled:opacity-50"
+                                    disabled
+                                >
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy</span>
+                                </button>
+                                <button 
+                                    id="clear-btn" 
+                                    class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2 opacity-0 disabled:opacity-50"
+                                    disabled
+                                >
+                                    <i class="fas fa-trash"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article Content -->
+                    <div class="p-6">
+                        <div id="article-content" class="min-h-96">
+                            <!-- Welcome State -->
+                            <div id="welcome-state" class="text-center py-16">
+                                <div class="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i class="fas fa-magic text-3xl text-blue-500"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">Ready to Create Amazing Content</h3>
+                                <p class="text-gray-500 max-w-md mx-auto">
+                                    Enter your topic and preferences on the left, then click "Generate Article" to create high-quality content using local AI.
+                                </p>
+                            </div>
+
+                            <!-- Loading State -->
+                            <div id="loading-state" class="hidden text-center py-16">
+                                <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-6"></div>
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">Generating Your Article</h3>
+                                <p class="text-gray-500">Please wait while our AI creates your content...</p>
+                                <div id="progress-bar" class="w-64 h-2 bg-gray-200 rounded-full mx-auto mt-4">
+                                    <div class="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Error State -->
+                            <div id="error-state" class="hidden text-center py-16">
+                                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i class="fas fa-exclamation-triangle text-2xl text-red-500"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-red-700 mb-3">Generation Failed</h3>
+                                <p id="error-message" class="text-red-600 max-w-md mx-auto mb-4"></p>
+                                <button onclick="showWelcomeState()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                                    Try Again
+                                </button>
+                            </div>
+
+                            <!-- Article Display -->
+                            <div id="article-display" class="hidden">
+                                <div id="article-text" class="prose max-w-none text-gray-800 leading-relaxed"></div>
+                                <div id="article-stats" class="mt-6 p-4 bg-gray-50 rounded-lg border">
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                        <div>
+                                            <div class="text-2xl font-bold text-blue-600" id="word-count">0</div>
+                                            <div class="text-sm text-gray-600">Words</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-2xl font-bold text-green-600" id="char-count">0</div>
+                                            <div class="text-sm text-gray-600">Characters</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-2xl font-bold text-purple-600" id="paragraph-count">0</div>
+                                            <div class="text-sm text-gray-600">Paragraphs</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-2xl font-bold text-orange-600" id="read-time">0</div>
+                                            <div class="text-sm text-gray-600">Min Read</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

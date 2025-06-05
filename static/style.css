@@ -1,0 +1,232 @@
+:root {
+    --primary: 210 100% 50%; /* #0080FF */
+    --primary-dark: 210 100% 40%; /* #0066CC */
+    --secondary: 270 100% 50%; /* #8000FF */
+    --background: 210 11% 98%; /* #F5F7FA */
+    --surface: 0 0% 100%; /* #FFFFFF */
+    --text: 210 11% 15%; /* #1F2937 */
+    --text-muted: 210 9% 45%; /* #6B7280 */
+    --border: 210 16% 93%; /* #E5E7EB */
+    --success: 142 71% 45%; /* #10B981 */
+    --error: 0 84% 60%; /* #EF4444 */
+    --warning: 45 93% 58%; /* #F59E0B */
+}
+
+/* Custom radio button styling */
+input[type="radio"]:checked + div {
+    color: hsl(var(--primary));
+}
+
+input[type="radio"]:checked + div .text-xs {
+    color: hsl(var(--primary));
+}
+
+/* Smooth transitions for interactive elements */
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Custom scrollbar */
+.prose {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+}
+
+.prose::-webkit-scrollbar {
+    width: 6px;
+}
+
+.prose::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.prose::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 3px;
+}
+
+.prose::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--text-muted));
+}
+
+/* Article text formatting */
+#article-text h1, #article-text h2, #article-text h3, #article-text h4 {
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: hsl(var(--text));
+}
+
+#article-text h1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+}
+
+#article-text h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+#article-text h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+#article-text p {
+    margin-bottom: 1.5rem;
+    line-height: 1.75;
+}
+
+#article-text ul, #article-text ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+#article-text li {
+    margin-bottom: 0.5rem;
+}
+
+/* Loading animation enhancements */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Toast notification styles */
+.toast {
+    @apply px-6 py-4 rounded-lg shadow-lg text-white font-medium flex items-center space-x-3 transform transition-all duration-300 ease-in-out;
+    max-width: 400px;
+}
+
+.toast.success {
+    @apply bg-green-500;
+}
+
+.toast.error {
+    @apply bg-red-500;
+}
+
+.toast.info {
+    @apply bg-blue-500;
+}
+
+.toast.warning {
+    @apply bg-yellow-500;
+}
+
+.toast-enter {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.toast-exit {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+/* Health status indicators */
+.status-healthy {
+    @apply bg-green-100 text-green-800;
+}
+
+.status-healthy .w-2 {
+    @apply bg-green-500;
+}
+
+.status-unhealthy {
+    @apply bg-red-100 text-red-800;
+}
+
+.status-unhealthy .w-2 {
+    @apply bg-red-500;
+}
+
+.status-checking {
+    @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-checking .w-2 {
+    @apply bg-yellow-500 animate-pulse;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .grid.lg\\:grid-cols-3 {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .sticky {
+        position: static;
+    }
+    
+    #article-stats .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Stream typing effect */
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: hsl(var(--primary));
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Enhanced button states */
+button:disabled {
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+button:not(:disabled):hover {
+    transform: translateY(-1px);
+}
+
+button:not(:disabled):active {
+    transform: translateY(0);
+}
+
+/* Article content enhancement */
+.article-paragraph {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+.article-paragraph:last-child {
+    margin-bottom: 0;
+}
+
+/* Selection styling */
+::selection {
+    background-color: hsla(var(--primary), 0.2);
+    color: hsl(var(--text));
+}
+
+/* Focus states */
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: hsl(var(--primary));
+    border-color: transparent;
+}
