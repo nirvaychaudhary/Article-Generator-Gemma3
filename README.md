@@ -1,8 +1,9 @@
-
 <h1 align="center">LLM - ollama - gemma3:latest</h1>
 <p align="center">AI Article Generator</p>
 
 ## Overview
+
+![alt text](article_generator.png)
 
 The **Article Generator** is a web application built with **FastAPI** that leverages local AI models (via **Ollama**) to generate high-quality articles based on user-specified topics, lengths, styles, and tones. The frontend, styled with **Tailwind CSS**, provides an intuitive interface for generating and streaming articles.
 
